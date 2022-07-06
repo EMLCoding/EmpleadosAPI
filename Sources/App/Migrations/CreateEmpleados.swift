@@ -19,6 +19,7 @@ struct CreateEmpleados: AsyncMigration {
             .field(.address, .string)
             .field(.zipcode, .string)
             .field(.avatar, .string, .required)
+            //.field("time", .datetime) -> Por si se usara el @Timestamp de Empleados.swift
             .unique(on: .email) // Si se quieren varios campos unicos, se ponen separados por coma (on: .email, .username)
             .create()
     }

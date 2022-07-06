@@ -16,4 +16,6 @@ extension FieldKey {
     static let avatar = FieldKey("avatar")
     static let address = FieldKey("address")
     static let zipcode = FieldKey("zipcode")
+    static let name = FieldKey("name")
+    static let department = FieldKey("department")
 }

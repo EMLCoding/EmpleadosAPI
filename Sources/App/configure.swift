@@ -20,4 +20,6 @@ public func configure(_ app: Application) throws {
     
     // Carga de migraciones
     app.migrations.add(CreateEmpleados())
+    app.migrations.add(CreateDepartment())
+    app.migrations.add(CreateEmployees())
 }
