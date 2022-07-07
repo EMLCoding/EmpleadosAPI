@@ -22,6 +22,20 @@ final class Employees: Model, Content, Validatable {
     @Field(key: .avatar) var avatar: String
     @Parent(key: .department) var department: Departments // Relacion con la tabla Departments de tipo obligatorio. Todos los empleados tienen que tener 1 departamento. Cada departamento puede tener 1 o varios empleados.
     // @OptionalParent(key: .department) var department: Departments? -> Esto es lo mismo que lo de la linea anterior pero sin ser un dato obligatorio
+    @Siblings(through: EmployeesProjects.self, from: \.$employee, to: \.$project) var projects: [Projects] // Para la relacion n:n con la tabla Projects. El $employee y $project es por el nombre que se le ha dado a las propiedades @Parent de Employees+Projects
+    
+    init() {}
+    
+    init(id: UUID? = nil, firstName: String, lastName: String, username: String, email: String, address: String?, zipcode: String?, avatar: String, department: Int) {
+        self.id = id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.username = username
+        self.email = email
+        self.address = address
+        self.zipcode = zipcode
+        self.$department.id = department
+    }
     
     static func validations(_ validations: inout Validations) {
         validations.add("email", as: String.self, is: .email && .count(8...), customFailureDescription: "El email enviado no es válido")

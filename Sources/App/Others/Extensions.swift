@@ -18,4 +18,9 @@ extension FieldKey {
     static let zipcode = FieldKey("zipcode")
     static let name = FieldKey("name")
     static let department = FieldKey("department")
+    static let description = FieldKey("description")
+    static let initDate = FieldKey("init_date")
+    static let endDate = FieldKey("end_date")
+    static let employeeID = FieldKey("employee_id")
+    static let projectID = FieldKey("project_id")
 }

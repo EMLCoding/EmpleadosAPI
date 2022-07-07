@@ -16,4 +16,12 @@ final class Departments: Model, Content {
     
     // La siguiente propiedad es solo LOGICA, no esta en la BBDD, es solo para que funcione en Vapor la FK creada en Employees
     @Children(for: \.$department) var employeesDpto: [Employees] // Se pone \.$department porque department es el nombre de la variable con la FK en la tabla Employees
+    
+    // Es necesario poner este init vacio para poder usar el init de conveniencia (el de abajo) y que la clase se siga conformando con el protocolo Content
+    init() {}
+    
+    init(id: Int? = nil, name: String) {
+        self.id = id
+        self.name = name
+    }
 }

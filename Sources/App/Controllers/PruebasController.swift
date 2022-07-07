@@ -7,10 +7,17 @@
 
 import Vapor
 import Fluent
+import SQLKit
+
+struct Context: Decodable {
+    let rows: [Empleados]
+}
 
 struct PruebasController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        routes.get("api", "**", use: getAPIComodin)
+        routes.get("parametros", "**", use: getAPIComodin)
+        routes.get("sqlQuery", use: sqlQuery)
+        routes.get("sqlQueryFilter", use: sqlQueryFilter)
         
         let empleado = routes.grouped("empleado")
         empleado.get("getEmpleado", ":id", use: getEmpleadoClient)
@@ -27,5 +34,17 @@ struct PruebasController: RouteCollection {
         guard let id = req.parameters.get("id", as: Int.self) else { throw Abort(.badRequest) }
         let client = try await req.client.get("https://acemployeestest.herokuapp.com/api/getEmpleado/\(id)")
         return try client.content.decode(Empleados.self)
+    }
+    
+    func sqlQuery(req:Request) async throws -> [Empleados] {
+        return try await (req.db as! SQLDatabase).raw("SELECT * FROM empleados WHERE username = 'pepito'").all(decoding: Empleados.self).compactMap { results in
+            return results
+        }
+    }
+    
+    func sqlQueryFilter(req:Request) async throws -> [Empleados] {
+        try await Empleados.query(on: req.db)
+            .filter(.sql(raw: "first_name = 'Edu'")) // Aqui se pone lo que iria despues del WHERE en SQL
+            .all()
     }
 }

@@ -4,7 +4,7 @@ import Vapor
 
 // configures your application
 public func configure(_ app: Application) throws {
-    // uncomment to serve files from /Public folder
+    // uncomment to serve files from /Public folder -> Descomentar para que se pueda acceder a los documentos de la carpeta Public desde el codigo
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
     app.databases.use(.postgres(
@@ -22,4 +22,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateEmpleados())
     app.migrations.add(CreateDepartment())
     app.migrations.add(CreateEmployees())
+    app.migrations.add(CreateProjects())
+    app.migrations.add(CreateEmployeesProjects())
+    app.migrations.add(LoadDepartments())
 }
