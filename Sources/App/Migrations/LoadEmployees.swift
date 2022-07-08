@@ -15,7 +15,7 @@ struct LoadEmployees: AsyncMigration {
         let employees = try getEmpleados()
         for emp in employees {
             if let dpto = try await database.query(Departments.self).filter(\.$name == emp.department).first() {
-                try await Employees(id: emp.id, firstName: emp.firstName, lastName: emp.lastName, username: emp.username, email: emp.email, address: emp.address, zipcode: emp.zipcode, avatar: emp.avatar, department: try dpto.requireID())
+                try await Employees(firstName: emp.firstName, lastName: emp.lastName, username: emp.username, email: emp.email, address: emp.address, zipcode: emp.zipcode, avatar: emp.avatar, department: try dpto.requireID())
                     .create(on: database)
             }
         }

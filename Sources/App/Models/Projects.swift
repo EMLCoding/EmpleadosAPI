@@ -17,4 +17,14 @@ final class Projects: Model, Content {
     @Field(key: .initDate) var initDate: Date?
     @Field(key: .endDate) var endDate: Date?
     @Siblings(through: EmployeesProjects.self, from: \.$project, to: \.$employee) var employees: [Employees]
+    
+    init() {}
+    
+    init(id: UUID? = nil, name: String, desc: String, initDate: Date?, endDate: Date?) {
+        self.id = id
+        self.name = name
+        self.desc = desc
+        self.initDate = initDate
+        self.endDate = endDate
+    }
 }

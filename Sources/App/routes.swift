@@ -6,5 +6,6 @@ func routes(_ app: Application) throws {
         try api.register(collection: PruebasController())
         try api.register(collection: EmpleadoController())
         try api.register(collection: EmployeeController())
+        try api.register(collection: ProjectsController())
     }
 }

@@ -24,3 +24,11 @@ extension FieldKey {
     static let employeeID = FieldKey("employee_id")
     static let projectID = FieldKey("project_id")
 }
+
+extension DateFormatter {
+    static let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+}
