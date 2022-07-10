@@ -23,3 +23,20 @@ struct CreateEmployeesProjects: AsyncMigration {
             .delete()
     }
 }
+
+struct UpdateEmployeesProjects: AsyncMigration {
+    func prepare(on database: Database) async throws {
+        try await database.schema(EmployeesProjects.schema)
+            .field(.rol, .uuid)
+            .foreignKey(.rol, references: ProjectRoles.schema, .id)
+            .field(.fechaAsignacion, .date)
+            .update()
+    }
+    
+    func revert(on database: Database) async throws {
+        try await database.schema(EmployeesProjects.schema)
+            .deleteField(.fechaAsignacion)
+            .deleteField(.rol)
+            .update()
+    }
+}

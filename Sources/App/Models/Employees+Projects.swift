@@ -15,4 +15,21 @@ final class EmployeesProjects: Model {
     @ID(key: .id) var id: UUID?
     @Parent(key: .employeeID) var employee: Employees
     @Parent(key: .projectID) var project: Projects
+    @OptionalParent(key: .rol) var rol: ProjectRoles?
+    @Timestamp(key: .fechaAsignacion, on: .create) var fechaAsignacion: Date?
+}
+
+
+final class ProjectRoles: Model, Content {
+    static let schema = "project_roles"
+    
+    @ID(key: .id) var id: UUID?
+    @Field(key: .name) var name: String
+    
+    init() {}
+    
+    init(id: UUID? = nil, name: String) {
+        self.id = id
+        self.name = name
+    }
 }

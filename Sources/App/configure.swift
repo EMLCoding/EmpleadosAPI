@@ -41,4 +41,6 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateProjects())
     app.migrations.add(CreateEmployeesProjects())
     app.migrations.add(LoadDepartments())
+    app.migrations.add(CreateProjectsRol())
+    app.migrations.add(UpdateEmployeesProjects())
 }

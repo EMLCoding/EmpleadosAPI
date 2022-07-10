@@ -23,6 +23,8 @@ extension FieldKey {
     static let endDate = FieldKey("end_date")
     static let employeeID = FieldKey("employee_id")
     static let projectID = FieldKey("project_id")
+    static let fechaAsignacion = FieldKey("fecha_asignacion")
+    static let rol = FieldKey("rol ")
 }
 
 extension DateFormatter {

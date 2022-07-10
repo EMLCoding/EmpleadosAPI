@@ -7,7 +7,12 @@
 
 import Vapor
 
+struct EmployeeRol: Content {
+    let idEmployee: UUID
+    let idRol: UUID
+}
+
 struct AddProjectsEmployees: Content {
     let projectID: UUID
-    let employees: [UUID]
+    let employees: [EmployeeRol]
 }

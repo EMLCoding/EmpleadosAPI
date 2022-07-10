@@ -22,11 +22,12 @@ struct EmployeeController: RouteCollection {
         }
         routes.get("getDptoEmployee", ":id", use: getDepartmentEmployee)
         routes.group("department") { routes in
-            routes.get(use: getEmployees)
-            routes.post(use: getEmployees)
+            routes.get(use: getDepartments)
+            routes.post(use: createDepartment)
             routes.group(":dptoID") { dpto in
-                dpto.get("empleados", use: getEmployees)
-                dpto.put(use: getEmployees)
+                dpto.get(use: getDepartment)
+                dpto.get("empleados", use: getEmpleadosDpto)
+                dpto.put(use: updateDepartment)
             }
         }
     }
@@ -144,5 +145,46 @@ struct EmployeeController: RouteCollection {
         } else {
             throw Abort(.notFound)
         }
+    }
+    
+    func getDepartments(req:Request) async throws -> [Departments] {
+        try await Departments.query(on: req.db).all()
+    }
+    
+    func createDepartment(req:Request) async throws -> Departments {
+        let content = try req.content.decode(CreateDepartments.self)
+        if try await Departments.query(on: req.db).filter(\.$name, .custom("ILIKE"), content.name).all().count == 0 {
+            let newDpto = Departments(name: content.name)
+            try await newDpto.create(on: req.db)
+            return newDpto
+        } else {
+            throw Abort(.badRequest, reason: "Ya existe un departamento con el nombre: \(content.name)")
+        }
+    }
+    
+    func getDepartment(req:Request) async throws -> Departments {
+        guard let id = req.parameters.get("dptoID", as: Int.self) else { throw Abort(.badRequest) }
+        guard let dpto = try await Departments.find(id, on: req.db) else { throw Abort(.notFound) }
+        return dpto
+    }
+    
+    func updateDepartment(req:Request) async throws -> Departments {
+        let content = try req.content.decode(CreateDepartments.self)
+        guard let id = req.parameters.get("dptoID", as: Int.self) else { throw Abort(.badRequest) }
+        guard let dpto = try await Departments.find(id, on: req.db) else { throw Abort(.notFound) }
+        if content.name.lowercased() != dpto.name.lowercased() {
+            dpto.name = content.name.capitalized
+            try await dpto.update(on: req.db)
+            return dpto
+        } else {
+            throw Abort(.badRequest, reason: "El departamento ya se llama asi")
+        }
+        
+    }
+    
+    func getEmpleadosDpto(req:Request) async throws -> [Employees] {
+        guard let id = req.parameters.get("dptoID", as: Int.self) else { throw Abort(.badRequest) }
+        guard let dpto = try await Departments.find(id, on: req.db) else { throw Abort(.notFound) }
+        return try await dpto.$employeesDpto.get(on: req.db)
     }
 }

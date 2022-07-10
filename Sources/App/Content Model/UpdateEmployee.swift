@@ -18,3 +18,12 @@ struct UpdateEmployee: Content {
     var department: Int?
 }
 
+struct CreateDepartments: Content {
+    let name: String
+}
+
+struct UpdateDepartment: Content {
+    let id: Int
+    let name: String
+}
+
